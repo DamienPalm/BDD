@@ -1,0 +1,63 @@
+LES REGROUPEMENTS :
+
+1°) Regroupement et GROUP BY
+
+SELECT typearme.libelle AS "type d'arme", COUNT(arme.idTypeArme) AS "Nb d'arme"
+FROM arme
+INNER JOIN typearme ON typearme.idTypeArme = arme.idTypeArme
+GROUP BY typearme.libelle;
+
+SELECT c.nom 'classe', c.description, COUNT(p.idClasse) 'NB Personnage'
+FROM personnage p
+INNER JOIN classe c ON c.idClasse = p.idClasse
+GROUP BY p.idClasse;
+
+SELECT p.nom, COUNT(*)
+FROM dispose d
+INNER JOIN personnage p ON p.idPersonnage = d.idPersonnage
+INNER JOIN arme a ON a.idArme = d.idArme
+GROUP BY p.nom;
+
+SELECT c.nom 'Classe', p.nom, COUNT(*)
+FROM dispose d
+INNER JOIN personnage p ON p.idPersonnage = d.idPersonnage
+INNER JOIN arme a ON a.idArme = d.idArme
+INNER JOIN classe c ON c.idClasse = p.idClasse
+WHERE c.idClasse = 1
+GROUP BY p.nom;
+
+SELECT a.nom, COUNT(p.idPersonnage)
+FROM arme a
+INNER JOIN dispose d ON d.idArme = a.idArme
+INNER JOIN personnage p ON p.idPersonnage = d.idPersonnage
+GROUP BY a.nom;
+
+SELECT c.nom 'classe', AVG(p.level) 'Niveau moyen'
+FROM classe c
+INNER JOIN personnage p ON p.idClasse = c.idClasse
+GROUP BY c.nom;
+
+
+2°) Regroupement et HAVING
+
+SELECT c.nom 'classe', AVG(p.level) 'Niveau moyen'
+FROM classe c
+INNER JOIN personnage p ON p.idClasse = c.idClasse
+GROUP BY c.nom
+HAVING AVG(p.level) >= 9;
+
+SELECT a.nom, COUNT(p.idPersonnage)
+FROM arme a
+INNER JOIN dispose d ON d.idArme = a.idArme
+INNER JOIN personnage p ON p.idPersonnage = d.idPersonnage
+GROUP BY a.nom
+HAVING COUNT(p.idPersonnage) < 3
+
+SELECT ta.libelle 'Type', COUNT(a.idTypeArme) 'NB Arme'
+FROM typearme ta
+INNER JOIN arme a ON a.idTypeArme = ta.idTypeArme
+WHERE ta.estDistance = 0
+GROUP BY ta.libelle
+HAVING COUNT(a.idTypeArme) < 2;
+
+
